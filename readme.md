@@ -5,6 +5,7 @@ System menu based on fzf.
 ----
 
 future plans for menu:
+- add licence
 - write readme documentation 
 - some manifest why use this technology and what is aim
 - file menu utility generator filter
