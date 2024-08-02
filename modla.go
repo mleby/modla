@@ -59,7 +59,7 @@ func main() {
 			"--reverse",
 			"--border",
 			// TODO Lebeda - vybrat automaticky
-			"--preview", "fzfMenu -preview {}", // TODO doladit preview program
+			"--preview", "modla -preview {}", // TODO doladit preview program
 			"--preview-window", "down,10",
 			"--expect=f1,f2,f3,f4,f5,f6,f7,f8,f9",
 			"--no-sort",
