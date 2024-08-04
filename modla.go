@@ -66,6 +66,7 @@ func main() {
 			"--reverse",
 			"--border",
                         "--select-1",
+                        "--bind", "one:accept",
 			autoOpt,
 			"--preview", "modla -preview {}", // TODO doladit preview program
 			"--preview-window", "down,10",
