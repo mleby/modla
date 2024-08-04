@@ -162,7 +162,7 @@ func main() {
 				if *dbgPtr {
 					writeDebugCommand(cmdname, cmdParams)
 				} else {
-					println("$", cmdstr)
+                                  println("executing: ", cmdstr)
 				}
 
 				_, interactive := os.LookupEnv("NU_INTERACTIVE")
