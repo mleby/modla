@@ -12,7 +12,7 @@ import (
 
 	"github.com/chzyer/readline"
 	"github.com/kballard/go-shellquote"
-	_ "github.com/mattn/go-sqlite3"
+	// _ "github.com/mattn/go-sqlite3"
 	"gopkg.in/pipe.v2"
 
 	// "github.com/nsf/termbox-go"
@@ -29,6 +29,7 @@ func main() {
 	//initqueryPtr := flag.String("initquery", "", "initial query")
 	previewLinePtr := flag.String("preview", "", "preview selected line from source")
 	dbgPtr := flag.Bool("debug", false, "show executed command and params")
+	autoExecPtr := flag.String("autoexec", "", "automatic execute on no item found")
 
 	flag.Parse()
 
@@ -45,6 +46,12 @@ func main() {
 		panic("Not defined menu source")
 	}
 
+        autoOpt := "--ansi"
+        if *autoExecPtr != "" {
+           autoOpt = "--exit-0"     
+        }
+        
+
 	hostname, err2 := os.Hostname()
 	if err2 != nil {
 		fmt.Printf("%v\n", err2)
@@ -58,7 +65,8 @@ func main() {
 			"--prompt", hostname+", "+time.Now().Format("Mon 2.1. 15:04")+": ",
 			"--reverse",
 			"--border",
-			// TODO Lebeda - vybrat automaticky
+                        "--select-1",
+			autoOpt,
 			"--preview", "modla -preview {}", // TODO doladit preview program
 			"--preview-window", "down,10",
 			"--expect=f1,f2,f3,f4,f5,f6,f7,f8,f9",
@@ -67,11 +75,15 @@ func main() {
 			"--ansi"),
 	)
 
-	output, err := pipe.CombinedOutput(p)
-	if err != nil {
-		fmt.Printf("%v\n", err)
-	}
+	output, err := pipe.CombinedOutput(p) 
 	outstr := string(output)
+	if err != nil {
+          if err.Error() == `command "fzf": exit status 1` {
+            outstr = "f1\nautorun\t" + *autoExecPtr
+          } else {
+            fmt.Printf("err: %v\n", err)
+          }
+	}
 	lines := strings.Split(outstr, "\n")
 
 	// read key
